@@ -199,7 +199,7 @@ func transcribeWAV(apiKey string, wavData []byte) (string, error) {
 	mw.WriteField("model", "whisper-1")
 	mw.Close()
 
-	req, err := http.NewRequest("POST", "https://api.openai.com/v1/audio/transcriptions", &body)
+	req, err := http.NewRequest("POST", "https://api.openai.com/v1/audio/translations", &body)
 	if err != nil {
 		return "", err
 	}

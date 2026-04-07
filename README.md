@@ -1,10 +1,11 @@
 # macAudioTranscript
 
-A macOS terminal app that listens to your microphone and transcribes speech in real time using OpenAI Whisper.
+A macOS terminal app that listens to your microphone and transcribes speech to English in real time using OpenAI Whisper.
 
 ## Features
 
 - Live microphone capture with a real-time audio level meter
+- Transcribes and translates speech to **English** regardless of the spoken language
 - Timestamped transcript lines printed as speech is recognized
 - Silence detection — silent chunks are skipped automatically
 - Optional transcript save to a file
@@ -21,7 +22,7 @@ A macOS terminal app that listens to your microphone and transcribes speech in r
 ```bash
 git clone https://github.com/michaelwp/macAudioTranscription
 cd macAudioTranscription
-go build -o transcript .
+make
 ```
 
 ## Usage
@@ -30,25 +31,25 @@ go build -o transcript .
 
 ```bash
 export OPENAI_API_KEY="sk-..."
-./transcript
+./bin/transcript
 ```
 
 ### Pass the key inline
 
 ```bash
-./transcript -key sk-...
+./bin/transcript -key sk-...
 ```
 
 ### Save transcript to a file
 
 ```bash
-./transcript -out transcript.txt
+./bin/transcript -out transcript.txt
 ```
 
 ### Transcribe an existing WAV file
 
 ```bash
-./transcript -file recording.wav
+./bin/transcript -file recording.wav
 ```
 
 ## Flags
@@ -95,8 +96,8 @@ export OPENAI_API_KEY="sk-..."
 ## How it works
 
 1. Audio is captured from the default microphone at 16 kHz, 16-bit mono PCM using [miniaudio](https://github.com/mackron/miniaudio) via the [malgo](https://github.com/gen2brain/malgo) Go bindings.
-2. Every `-chunk` seconds the buffer is flushed, encoded as a WAV file in memory, and sent to the [OpenAI Whisper API](https://platform.openai.com/docs/guides/speech-to-text) (`whisper-1` model).
-3. The transcription result is printed to the terminal with a timestamp.
+2. Every `-chunk` seconds the buffer is flushed, encoded as a WAV file in memory, and sent to the [OpenAI Whisper API](https://platform.openai.com/docs/guides/speech-to-text) translations endpoint (`whisper-1` model), which always returns English output.
+3. The transcript is printed to the terminal with a timestamp.
 
 ## License
 
